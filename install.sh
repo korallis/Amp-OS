@@ -1,6 +1,6 @@
 #!/bin/bash
 # AMP-OS Installer
-# One-line install: curl -fsSL https://raw.githubusercontent.com/leebarry/Amp-OS/main/install.sh | bash
+# One-line install: curl -fsSL https://raw.githubusercontent.com/korallis/Amp-OS/main/install.sh | bash
 
 set -euo pipefail
 
@@ -11,7 +11,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Configuration
-REPO="leebarry/Amp-OS"
+REPO="korallis/Amp-OS"
 INSTALL_DIR="${AMP_OS_HOME:-$HOME/Amp-OS}"
 BRANCH="${AMP_OS_BRANCH:-main}"
 

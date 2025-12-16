@@ -9,13 +9,13 @@ AMP-OS brings structured, lazy-loaded development workflows to [Amp](https://amp
 **One-line install:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/leebarry/Amp-OS/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/korallis/Amp-OS/main/install.sh | bash
 ```
 
 Or clone manually:
 
 ```bash
-git clone https://github.com/leebarry/Amp-OS.git ~/Amp-OS
+git clone https://github.com/korallis/Amp-OS.git ~/Amp-OS
 ```
 
 ## Quick Start
