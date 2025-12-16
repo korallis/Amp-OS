@@ -1,0 +1,12 @@
+version: 1.0.0
+base_install: true
+
+# Installation behavior
+use_symlinks: true              # Symlink skills (true) or copy (false)
+profile: default                # Default profile to use
+
+# Skill categories to install
+install_phase_skills: true      # Plan, Shape, Write, Create, Implement, Verify
+install_verifier_skills: true   # spec-verifier, implementation-verifier
+install_standards_skills: true  # standards-global, backend, frontend, testing
+install_utility_skills: true    # architecture-diagrams, code-analysis
