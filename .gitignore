@@ -11,3 +11,6 @@ Thumbs.db
 
 # Test outputs
 /tmp/
+
+# Development docs (not needed for install)
+/docs/
