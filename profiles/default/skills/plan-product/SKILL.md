@@ -1,5 +1,5 @@
 ---
-name: amp-os-plan-product
+name: plan-product
 description: Create and refine a multi-phase product roadmap. Use when starting a new project, planning features, or updating the product roadmap. Leverages oracle for strategic planning.
 ---
 

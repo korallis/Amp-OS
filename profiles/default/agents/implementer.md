@@ -14,10 +14,10 @@ Read these files before starting:
 - `AGENTS.md` - Project commands and conventions
 
 Load these skills:
-- `amp-os-standards-global` (always)
-- `amp-os-standards-backend` (for API/database work)
-- `amp-os-standards-frontend` (for UI work)
-- `amp-os-standards-testing` (always)
+- `standards-global` (always)
+- `standards-backend` (for API/database work)
+- `standards-frontend` (for UI work)
+- `standards-testing` (always)
 
 ## Workflow
 
@@ -92,7 +92,7 @@ Context:
 - Requirements: amp-os/specs/[feature]/planning/requirements.md
 
 Instructions:
-- Load amp-os-standards-[relevant] skill
+- Load standards-[relevant] skill
 - Implement all sub-tasks in order
 - Write tests first
 - Run only group tests at end

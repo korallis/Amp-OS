@@ -1,5 +1,5 @@
 ---
-name: amp-os-implement-tasks
+name: implement-tasks
 description: Implement tasks from tasks.md using multi-agent orchestration. Use when ready to implement a spec's tasks, supports both single-agent and multi-agent modes via Task tool.
 ---
 

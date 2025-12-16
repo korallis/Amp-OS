@@ -1,5 +1,5 @@
 ---
-name: amp-os-shape-spec
+name: shape-spec
 description: Research and gather requirements for a new feature spec. Use when you have a feature idea and need to understand scope, gather requirements, and document visuals before writing a spec.
 ---
 

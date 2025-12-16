@@ -1,5 +1,5 @@
 ---
-name: amp-os-write-spec
+name: write-spec
 description: Write a detailed feature specification from requirements. Use after shaping to create spec.md with goals, user stories, requirements, and technical approach.
 ---
 

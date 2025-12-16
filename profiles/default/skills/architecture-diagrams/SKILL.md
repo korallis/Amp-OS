@@ -1,5 +1,5 @@
 ---
-name: amp-os-architecture-diagrams
+name: architecture-diagrams
 description: Generate mermaid architecture diagrams. Use when visualizing system flows, component relationships, sequences, or data models.
 ---
 

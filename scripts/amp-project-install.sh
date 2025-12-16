@@ -176,13 +176,20 @@ EOF
 
 This project uses AMP-OS for spec-driven development.
 
+### Standards (Always Apply)
+Before writing code, load relevant standards:
+- \`standards-global\` - Universal conventions (always)
+- \`standards-frontend\` - React/Next.js patterns
+- \`standards-backend\` - Database, API, payments
+- \`standards-testing\` - Vitest, Playwright, MSW
+
 ### Workflow Skills
-- \`amp-os-plan-product\` - Create product roadmaps
-- \`amp-os-shape-spec\` - Research and gather requirements
-- \`amp-os-write-spec\` - Write specifications
-- \`amp-os-create-tasks\` - Break specs into tasks
-- \`amp-os-implement-tasks\` - Implement with standards
-- \`amp-os-verify-implementation\` - Final verification
+- \`plan-product\` - Create product roadmaps
+- \`shape-spec\` - Research and gather requirements
+- \`write-spec\` - Write specifications
+- \`create-tasks\` - Break specs into tasks
+- \`implement-tasks\` - Implement with standards
+- \`verify-implementation\` - Final verification
 
 ### Commands
 \`\`\`bash

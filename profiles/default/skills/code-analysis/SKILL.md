@@ -1,5 +1,5 @@
 ---
-name: amp-os-code-analysis
+name: code-analysis
 description: Structured codebase analysis for understanding architecture, patterns, and dependencies. Use when onboarding to a codebase, planning changes, or assessing impact.
 ---
 

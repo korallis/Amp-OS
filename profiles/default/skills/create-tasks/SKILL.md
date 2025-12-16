@@ -1,5 +1,5 @@
 ---
-name: amp-os-create-tasks
+name: create-tasks
 description: Break a specification into implementable tasks. Use after spec.md is complete to create tasks.md with grouped, ordered, dependency-aware task breakdown.
 ---
 

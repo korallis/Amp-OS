@@ -1,229 +1,390 @@
-# Coding Conventions
+# Global Coding Conventions
 
-## 1. Naming Conventions
+Comprehensive coding standards for modern TypeScript full-stack development.
 
-### Files & Directories
-```
-components/user-profile.tsx    # kebab-case for files
-utils/format-date.ts           # descriptive, single-purpose
-hooks/use-auth.ts              # hooks prefixed with 'use'
-types/user.types.ts            # type files suffixed with '.types'
-constants/api-endpoints.ts     # constants in dedicated files
-```
+## TypeScript Configuration
 
-### Variables & Functions
-```typescript
-// Functions: camelCase, verb-first
-function getUserById(id: string) {}
-function validateEmail(email: string) {}
-function handleSubmit(event: Event) {}
+### Recommended tsconfig.json
 
-// Booleans: is/has/should/can prefix
-const isLoading = true;
-const hasPermission = false;
-const shouldRefetch = true;
-const canEdit = user.role === 'admin';
-
-// Constants: SCREAMING_SNAKE_CASE
-const MAX_RETRY_COUNT = 3;
-const API_BASE_URL = '/api/v1';
-```
-
-### Types & Interfaces
-```typescript
-// PascalCase for types/interfaces
-interface UserProfile {}
-type ApiResponse<T> = {}
-enum UserRole { Admin, User, Guest }
-
-// Props suffixed with Props
-interface ButtonProps {}
-interface UserCardProps {}
-```
-
-## 2. File Organization
-
-### Import Order
-```typescript
-// 1. External libraries
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-
-// 2. Internal absolute imports
-import { Button } from '@/components/ui';
-import { useAuth } from '@/hooks';
-
-// 3. Relative imports
-import { formatDate } from './utils';
-import type { UserProps } from './types';
-```
-
-### File Structure
-```typescript
-// 1. Imports
-// 2. Types/Interfaces
-// 3. Constants
-// 4. Helper functions (if small)
-// 5. Main export (component/function)
-// 6. Sub-components (if any)
-```
-
-### Size Guidelines
-- Files: < 300 lines (split if larger)
-- Functions: < 50 lines (extract if larger)
-- Components: < 200 lines (compose if larger)
-
-## 3. Error Handling
-
-### Do
-```typescript
-// Typed errors
-class ValidationError extends Error {
-  constructor(public field: string, message: string) {
-    super(message);
-    this.name = 'ValidationError';
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
-
-// Contextual logging
-logger.error('Failed to fetch user', { 
-  userId, 
-  error: err.message,
-  stack: err.stack 
-});
-
-// Graceful degradation
-const user = await fetchUser(id).catch(() => null);
-if (!user) return <FallbackUI />;
 ```
 
-### Don't
+## Type Patterns
+
+### Discriminated Unions
+
 ```typescript
-// Silent swallowing
-try { doThing(); } catch (e) {}
+// ✅ Preferred: Discriminated unions for state
+type AsyncState<T> = 
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'success'; data: T }
+  | { status: 'error'; error: Error };
 
-// Generic messages
-throw new Error('Something went wrong');
-
-// Unhandled promises
-fetchData(); // missing await or .catch()
+function handleState<T>(state: AsyncState<T>) {
+  switch (state.status) {
+    case 'idle':
+      return 'Ready to load';
+    case 'loading':
+      return 'Loading...';
+    case 'success':
+      return state.data; // TypeScript knows data exists
+    case 'error':
+      return state.error.message; // TypeScript knows error exists
+  }
+}
 ```
 
-## 4. Code Style
+### Type Guards
 
-### Prefer
 ```typescript
-// Early returns
-function process(data) {
-  if (!data) return null;
-  if (!data.valid) return { error: 'invalid' };
-  return transform(data);
+// ✅ Custom type guards for runtime checks
+function isUser(value: unknown): value is User {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'id' in value &&
+    'email' in value
+  );
 }
 
-// Destructuring
-const { name, email } = user;
-const [first, ...rest] = items;
+// ✅ Zod for complex validation
+const UserSchema = z.object({
+  id: z.string(),
+  email: z.string().email(),
+});
 
-// Optional chaining
-const city = user?.address?.city;
-
-// Nullish coalescing
-const name = user.name ?? 'Anonymous';
+function isValidUser(value: unknown): value is User {
+  return UserSchema.safeParse(value).success;
+}
 ```
 
-### Avoid
+### Generic Constraints
+
 ```typescript
-// Nested conditionals
-if (a) {
-  if (b) {
-    if (c) {
-      // deep nesting
+// ✅ Constrained generics
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+// ✅ Conditional types
+type NonNullableFields<T> = {
+  [K in keyof T]: NonNullable<T[K]>;
+};
+
+// ✅ Infer keyword
+type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
+```
+
+### Utility Types
+
+```typescript
+// Common utility type patterns
+type Nullable<T> = T | null;
+type Optional<T> = T | undefined;
+type Maybe<T> = T | null | undefined;
+
+// API response types
+type ApiResponse<T> = {
+  data: T;
+  meta?: {
+    page: number;
+    total: number;
+    hasMore: boolean;
+  };
+};
+
+// Action result
+type ActionResult<T = void> = 
+  | { success: true; data: T }
+  | { success: false; error: string };
+```
+
+## Function Patterns
+
+### Parameter Objects
+
+```typescript
+// ❌ Too many parameters
+function createUser(
+  name: string,
+  email: string,
+  role: string,
+  department: string,
+  manager: string
+) { /* ... */ }
+
+// ✅ Parameter object
+interface CreateUserInput {
+  name: string;
+  email: string;
+  role: UserRole;
+  department: string;
+  managerId?: string;
+}
+
+function createUser(input: CreateUserInput) {
+  const { name, email, role, department, managerId } = input;
+  // ...
+}
+```
+
+### Early Returns
+
+```typescript
+// ❌ Nested conditionals
+function processOrder(order: Order) {
+  if (order) {
+    if (order.items.length > 0) {
+      if (order.status === 'pending') {
+        // Process order
+      }
     }
   }
 }
 
-// Magic numbers
-setTimeout(fn, 86400000); // what is this?
-
-// Abbreviations
-const usrNm = user.name; // unclear
-const btn = document.querySelector('button'); // use full words
+// ✅ Early returns (guard clauses)
+function processOrder(order: Order | null) {
+  if (!order) return;
+  if (order.items.length === 0) return;
+  if (order.status !== 'pending') return;
+  
+  // Process order - now at a low nesting level
+}
 ```
 
-## 5. Comments
+### Async Function Patterns
 
-### Good Comments
 ```typescript
-// Explain WHY, not WHAT
-// Using setTimeout to debounce rapid clicks that cause race conditions
-setTimeout(handleClick, 100);
-
-// Document non-obvious business logic
-// Tax exempt if: non-profit org OR order total < $10 (company policy #123)
-const isTaxExempt = org.isNonProfit || total < 10;
-
-// TODO with context
-// TODO(username): Migrate to new API after v2 release (ETA: Q2)
-```
-
-### Bad Comments
-```typescript
-// Obvious comments
-i++; // increment i
-
-// Outdated comments
-// Returns user name (actually returns full user object now)
-function getUser() {}
-
-// Commented-out code
-// const oldImplementation = () => {};
-```
-
-## 6. Async Patterns
-
-### Promises
-```typescript
-// Prefer async/await
-async function fetchData() {
+// ✅ Async function with proper error handling
+async function fetchUserData(userId: string): Promise<Result<UserData>> {
   try {
-    const response = await api.get('/data');
-    return response.data;
+    const response = await fetch(`/api/users/${userId}`);
+    
+    if (!response.ok) {
+      return {
+        success: false,
+        error: new AppError(
+          `Failed to fetch user: ${response.statusText}`,
+          'FETCH_ERROR',
+          response.status
+        ),
+      };
+    }
+    
+    const data = await response.json();
+    const validated = UserDataSchema.parse(data);
+    
+    return { success: true, data: validated };
   } catch (error) {
-    handleError(error);
-    throw error;
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        error: new AppError('Invalid response data', 'VALIDATION_ERROR', 500),
+      };
+    }
+    throw error; // Re-throw unexpected errors
+  }
+}
+```
+
+## Module Organization
+
+### Barrel Exports
+
+```typescript
+// components/ui/index.ts
+export { Button } from './button';
+export { Input } from './input';
+export { Card } from './card';
+
+// Usage
+import { Button, Input, Card } from '@/components/ui';
+```
+
+### Co-location
+
+```
+features/
+└── auth/
+    ├── components/
+    │   ├── login-form.tsx
+    │   └── signup-form.tsx
+    ├── hooks/
+    │   └── use-auth.ts
+    ├── actions/
+    │   └── auth-actions.ts
+    ├── types.ts
+    └── index.ts
+```
+
+## Constants and Configuration
+
+```typescript
+// lib/constants.ts
+export const APP_CONFIG = {
+  name: 'MyApp',
+  version: '1.0.0',
+  api: {
+    baseUrl: process.env.NEXT_PUBLIC_API_URL,
+    timeout: 30_000,
+    retries: 3,
+  },
+  pagination: {
+    defaultPageSize: 20,
+    maxPageSize: 100,
+  },
+} as const;
+
+// Numeric constants with underscores for readability
+const MAX_FILE_SIZE = 10_000_000; // 10MB
+const CACHE_TTL = 60 * 60 * 1000; // 1 hour in ms
+```
+
+## Error Handling Patterns
+
+### Error Classes
+
+```typescript
+// lib/errors.ts
+export class AppError extends Error {
+  constructor(
+    message: string,
+    public readonly code: string,
+    public readonly statusCode: number = 500,
+    public readonly isOperational: boolean = true,
+    public readonly context?: Record<string, unknown>
+  ) {
+    super(message);
+    this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 
-// Parallel when independent
-const [users, posts] = await Promise.all([
-  fetchUsers(),
-  fetchPosts()
-]);
-```
+export class ValidationError extends AppError {
+  constructor(message: string, context?: Record<string, unknown>) {
+    super(message, 'VALIDATION_ERROR', 400, true, context);
+  }
+}
 
-### Error Boundaries
-```typescript
-// Always handle async errors
-await doThing().catch(handleError);
+export class NotFoundError extends AppError {
+  constructor(resource: string, id: string) {
+    super(`${resource} not found: ${id}`, 'NOT_FOUND', 404, true, { resource, id });
+  }
+}
 
-// Or use try/catch
-try {
-  await doThing();
-} catch (error) {
-  handleError(error);
+export class UnauthorizedError extends AppError {
+  constructor(message = 'Unauthorized') {
+    super(message, 'UNAUTHORIZED', 401, true);
+  }
 }
 ```
 
-## 7. Security
+### Try-Catch Patterns
 
-### Never
-- Commit secrets, keys, or credentials
-- Log sensitive data (passwords, tokens, PII)
-- Use `eval()` or `dangerouslySetInnerHTML` without sanitization
-- Trust user input without validation
+```typescript
+// ✅ Specific error handling
+try {
+  await createUser(data);
+} catch (error) {
+  if (error instanceof ValidationError) {
+    // Handle validation error
+    return { error: error.message };
+  }
+  if (error instanceof DatabaseError) {
+    // Handle database error
+    logger.error('Database error', { error });
+    return { error: 'An unexpected error occurred' };
+  }
+  // Re-throw unknown errors
+  throw error;
+}
+```
 
-### Always
-- Validate and sanitize inputs
-- Use parameterized queries
-- Implement proper authentication checks
-- Follow principle of least privilege
+## Logging Best Practices
+
+```typescript
+// lib/logger.ts
+import pino from 'pino';
+
+export const logger = pino({
+  level: process.env.LOG_LEVEL || 'info',
+  formatters: {
+    level: (label) => ({ level: label }),
+  },
+});
+
+// Usage with context
+logger.info({ userId, action: 'login' }, 'User logged in');
+logger.error({ error, requestId }, 'Request failed');
+logger.warn({ threshold, current }, 'Rate limit approaching');
+```
+
+## Git Commit Conventions
+
+```
+type(scope): description
+
+Types:
+- feat: New feature
+- fix: Bug fix
+- docs: Documentation
+- style: Formatting (no code change)
+- refactor: Code restructuring
+- test: Tests
+- chore: Maintenance
+
+Examples:
+- feat(auth): add OAuth2 login support
+- fix(api): handle null user in response
+- docs(readme): update installation steps
+```
+
+## Code Review Checklist
+
+- [ ] Types are strict (no `any`, proper inference)
+- [ ] Error handling is comprehensive
+- [ ] No magic numbers or strings
+- [ ] Functions are < 50 lines
+- [ ] Files are < 300 lines
+- [ ] Naming is clear and consistent
+- [ ] No console.log in production code
+- [ ] Secrets are properly handled
+- [ ] Tests cover edge cases
+- [ ] Accessibility considered (if UI)

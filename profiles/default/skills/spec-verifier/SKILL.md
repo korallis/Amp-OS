@@ -1,5 +1,5 @@
 ---
-name: amp-os-spec-verifier
+name: spec-verifier
 description: Verify specification quality and completeness. Use after writing spec.md to ensure it meets standards before task breakdown - checks for clarity, feasibility, testability, and completeness.
 ---
 

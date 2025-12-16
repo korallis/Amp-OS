@@ -1,12 +1,23 @@
-version: 1.0.0
-base_install: true
+version: 2.0.0
+profile: default
+
+# Agent-OS Compatibility
+standards_as_skills: true           # Standards are delivered as Amp CLI skills (not raw markdown)
+auto_apply_standards: true          # Standards are always applied via AGENTS.md
 
 # Installation behavior
-use_symlinks: true              # Symlink skills (true) or copy (false)
-profile: default                # Default profile to use
+use_symlinks: true                  # Symlink skills (true) or copy (false)
+base_install: true                  # Install base AMP-OS structure
 
 # Skill categories to install
-install_phase_skills: true      # Plan, Shape, Write, Create, Implement, Verify
-install_verifier_skills: true   # spec-verifier, implementation-verifier
-install_standards_skills: true  # standards-global, backend, frontend, testing
-install_utility_skills: true    # architecture-diagrams, code-analysis
+install_phase_skills: true          # Plan, Shape, Write, Create, Implement, Verify
+install_verifier_skills: true       # spec-verifier, implementation-verifier
+install_standards_skills: true      # standards-global, backend, frontend, testing
+install_utility_skills: true        # architecture-diagrams, code-analysis
+
+# Standards mapping (maps to skills/)
+standards:
+  global: standards-global
+  backend: standards-backend
+  frontend: standards-frontend
+  testing: standards-testing

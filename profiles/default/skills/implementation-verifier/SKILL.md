@@ -1,5 +1,5 @@
 ---
-name: amp-os-implementation-verifier
+name: implementation-verifier
 description: Verify implementation completeness against spec and tasks. Use after implementation to ensure all tasks are complete, tests pass, and code meets quality standards before marking feature done.
 ---
 

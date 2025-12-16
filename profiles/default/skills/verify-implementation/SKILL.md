@@ -1,5 +1,5 @@
 ---
-name: amp-os-verify-implementation
+name: verify-implementation
 description: Final verification after implementation is complete. Use when all tasks are done to verify against spec, run full tests, update roadmap, and generate final report.
 ---
 
