@@ -2,7 +2,7 @@
 
 > Spec-driven development workflows for AI coding assistants.
 
-A structured framework for planning, specification, implementation, and verification—originally based on [AGENT-OS](https://github.com/buildermethods/agent-os) by Brian Casel.
+A structured framework for planning, specification, implementation, and verification.
 
 **Supports:**
 - **Amp CLI** (Sourcegraph) — uses skills-based lazy loading
@@ -335,7 +335,6 @@ cd ~/Amp-OS && git pull
 
 ## Credits
 
-- Original [AGENT-OS](https://github.com/buildermethods/agent-os) by [Brian Casel](https://buildermethods.com)
 - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) by code-yeongyu
 - [Amp CLI](https://ampcode.com) by Sourcegraph
 - [OpenCode](https://opencode.ai) by SST

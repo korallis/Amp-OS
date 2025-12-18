@@ -118,4 +118,3 @@ Standards are automatically loaded. They cover:
 
 - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode)
 - [OpenCode Docs](https://opencode.ai/docs)
-- [AGENT-OS Concepts](https://buildermethods.com/agent-os)

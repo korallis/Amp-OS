@@ -1,7 +1,7 @@
 version: 2.0.0
 profile: default
 
-# Agent-OS Compatibility
+# Amp-OS Configuration
 standards_as_skills: true           # Standards are delivered as Amp CLI skills (not raw markdown)
 auto_apply_standards: true          # Standards are always applied via AGENTS.md
 

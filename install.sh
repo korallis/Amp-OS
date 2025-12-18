@@ -33,7 +33,7 @@ show_banner() {
     echo -e "${CYAN}╔═══════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${CYAN}║${NC}                                                               ${CYAN}║${NC}"
     echo -e "${CYAN}║${NC}      ${GREEN}Spec-Driven Development Framework${NC}                       ${CYAN}║${NC}"
-    echo -e "${CYAN}║${NC}      Based on AGENT-OS by Builder Methods                     ${CYAN}║${NC}"
+    echo -e "${CYAN}║${NC}      Spec-driven development for AI assistants                ${CYAN}║${NC}"
     echo -e "${CYAN}║${NC}                                                               ${CYAN}║${NC}"
     echo -e "${CYAN}║${NC}      Supports: ${BLUE}Amp CLI${NC} | ${BLUE}OpenCode${NC}                           ${CYAN}║${NC}"
     echo -e "${CYAN}║${NC}                                                               ${CYAN}║${NC}"
