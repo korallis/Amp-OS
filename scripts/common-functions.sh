@@ -66,15 +66,32 @@ ensure_dir() {
     fi
 }
 
-# Create symlink or copy based on config
+# Create symlink or copy based on config (idempotent and safe)
 link_or_copy() {
     local source="$1"
     local dest="$2"
     local use_symlinks="${3:-true}"
     
-    # Remove existing destination
-    if [[ -e "$dest" ]] || [[ -L "$dest" ]]; then
-        rm -rf "$dest"
+    # Check if destination already exists
+    if [[ -L "$dest" ]]; then
+        # It's a symlink - check if it points to the right place
+        local current_target
+        current_target="$(readlink "$dest" 2>/dev/null || true)"
+        
+        if [[ "$use_symlinks" == "true" ]] && [[ "$current_target" == "$source" ]]; then
+            log_info "Already linked: $dest -> $source (skipped)"
+            return 0
+        fi
+        
+        # Wrong target or switching to copy mode - remove it
+        rm -f "$dest"
+        log_info "Removed stale symlink: $dest"
+        
+    elif [[ -e "$dest" ]]; then
+        # It's a real file/directory - back it up before replacing
+        local backup="${dest}.backup.$(date +%Y%m%d%H%M%S)"
+        mv "$dest" "$backup"
+        log_warning "Backed up existing: $dest -> $backup"
     fi
     
     if [[ "$use_symlinks" == "true" ]]; then
