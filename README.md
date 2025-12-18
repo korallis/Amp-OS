@@ -1,4 +1,4 @@
-# Spec-OS
+# Amp-OS
 
 > Spec-driven development workflows for AI coding assistants.
 
@@ -80,6 +80,117 @@ Plan Product → Shape Spec → Write Spec → Create Tasks → Implement → Ve
 | **Tasks** | Break into task groups | `amp-os-create-tasks` | `/create-tasks` |
 | **Implement** | TDD implementation | `amp-os-implement-tasks` | `/implement` |
 | **Verify** | Final verification | `amp-os-verify-implementation` | `/verify` |
+
+---
+
+## Workflow Examples
+
+### Greenfield Project (Starting Fresh)
+
+When building a new product from scratch, follow the full workflow:
+
+**Example: Building a SaaS invoicing app**
+
+```bash
+# 1. Install Amp-OS
+~/Amp-OS/scripts/opencode-project-install.sh ~/projects/invoice-app
+cd ~/projects/invoice-app && opencode
+```
+
+```
+# 2. Plan the product (creates roadmap.md)
+/plan-product Build a SaaS invoicing application with:
+- User authentication (email + OAuth)
+- Invoice creation and management
+- Stripe payment integration
+- PDF export
+- Client portal
+
+# 3. Shape the first feature
+/shape-spec user-auth
+# → Researches auth patterns, creates requirements.md
+
+# 4. Write the specification
+/write-spec user-auth
+# → Creates detailed spec.md with API contracts, data models
+
+# 5. Verify spec quality before implementation
+/verify-spec user-auth
+# → Oracle reviews for completeness, flags gaps
+
+# 6. Break into tasks
+/create-tasks user-auth
+# → Creates tasks.md with task groups
+
+# 7. Implement (TDD approach)
+/implement user-auth
+# → Implements each task group with tests first
+
+# 8. Final verification
+/verify user-auth
+# → Runs tests, updates roadmap, generates report
+```
+
+**Greenfield Tips:**
+- Start with `/plan-product` to establish vision and milestones
+- Tackle features in dependency order (auth → core → integrations)
+- Each feature gets its own spec directory
+- Verify specs before writing code
+
+---
+
+### Brownfield Project (Existing Codebase)
+
+When adding features to an existing project, adapt the workflow:
+
+**Example: Adding Stripe billing to an existing app**
+
+```bash
+# 1. Install Amp-OS into existing project
+~/Amp-OS/scripts/opencode-project-install.sh ~/projects/my-existing-app
+cd ~/projects/my-existing-app && opencode
+```
+
+```
+# 2. Skip product planning, go straight to feature shaping
+/shape-spec stripe-billing
+# → Analyzes existing code patterns, identifies integration points
+
+# 3. Write spec with existing code context
+/write-spec stripe-billing
+# → References existing models, follows established patterns
+
+# 4. Create tasks respecting current architecture  
+/create-tasks stripe-billing
+# → Breaks work into incremental, non-breaking changes
+
+# 5. Implement incrementally
+/implement stripe-billing
+# → Follows existing conventions, adds tests
+
+# 6. Verify integration
+/verify stripe-billing
+# → Ensures no regressions, all tests pass
+```
+
+**Brownfield Tips:**
+- Skip `/plan-product` unless restructuring the whole project
+- Use `/shape-spec` to analyze existing patterns first
+- Reference existing code in your spec prompts
+- Implement in smaller increments to avoid breaking changes
+- Run existing tests frequently during implementation
+
+---
+
+### Quick Reference: When to Use Each Command
+
+| Scenario | Commands to Use |
+|----------|-----------------|
+| **New product** | `/plan-product` → `/shape-spec` → `/write-spec` → `/create-tasks` → `/implement` → `/verify` |
+| **New feature (existing app)** | `/shape-spec` → `/write-spec` → `/create-tasks` → `/implement` → `/verify` |
+| **Bug fix** | Skip workflow, fix directly with standards loaded |
+| **Refactoring** | `/shape-spec` (to document current state) → `/create-tasks` → `/implement` → `/verify` |
+| **Spike/exploration** | `/shape-spec` only (research without committing to implementation) |
 
 ---
 
