@@ -87,9 +87,57 @@ Plan Product → Shape Spec → Write Spec → Create Tasks → Implement → Ve
 
 ### Greenfield Project (Starting Fresh)
 
-When building a new product from scratch, follow the full workflow:
+When building a new product from scratch, follow the full workflow.
 
 **Example: Building a SaaS invoicing app**
+
+<details>
+<summary><strong>Amp CLI Version</strong></summary>
+
+```bash
+# 1. Install Amp-OS
+~/Amp-OS/scripts/amp-project-install.sh ~/projects/invoice-app
+cd ~/projects/invoice-app && amp
+```
+
+```
+# 2. Plan the product (creates roadmap.md)
+"Load amp-os-plan-product skill. Build a SaaS invoicing application with:
+- User authentication (email + OAuth)
+- Invoice creation and management  
+- Stripe payment integration
+- PDF export
+- Client portal"
+
+# 3. Shape the first feature
+"Load amp-os-shape-spec skill for user-auth feature"
+# → Researches auth patterns, creates requirements.md
+
+# 4. Write the specification
+"Load amp-os-write-spec skill for user-auth"
+# → Creates detailed spec.md with API contracts, data models
+
+# 5. Verify spec quality before implementation
+"Load amp-os-spec-verifier skill for user-auth"
+# → Oracle reviews for completeness, flags gaps
+
+# 6. Break into tasks
+"Load amp-os-create-tasks skill for user-auth"
+# → Creates tasks.md with task groups
+
+# 7. Implement (TDD approach)
+"Load amp-os-implement-tasks skill for user-auth"
+# → Implements each task group with tests first
+
+# 8. Final verification
+"Load amp-os-verify-implementation skill for user-auth"
+# → Runs tests, updates roadmap, generates report
+```
+
+</details>
+
+<details>
+<summary><strong>OpenCode Version</strong></summary>
 
 ```bash
 # 1. Install Amp-OS
@@ -131,8 +179,10 @@ cd ~/projects/invoice-app && opencode
 # → Runs tests, updates roadmap, generates report
 ```
 
+</details>
+
 **Greenfield Tips:**
-- Start with `/plan-product` to establish vision and milestones
+- Start with product planning to establish vision and milestones
 - Tackle features in dependency order (auth → core → integrations)
 - Each feature gets its own spec directory
 - Verify specs before writing code
@@ -141,9 +191,45 @@ cd ~/projects/invoice-app && opencode
 
 ### Brownfield Project (Existing Codebase)
 
-When adding features to an existing project, adapt the workflow:
+When adding features to an existing project, adapt the workflow.
 
 **Example: Adding Stripe billing to an existing app**
+
+<details>
+<summary><strong>Amp CLI Version</strong></summary>
+
+```bash
+# 1. Install Amp-OS into existing project
+~/Amp-OS/scripts/amp-project-install.sh ~/projects/my-existing-app
+cd ~/projects/my-existing-app && amp
+```
+
+```
+# 2. Skip product planning, go straight to feature shaping
+"Load amp-os-shape-spec skill for stripe-billing feature"
+# → Analyzes existing code patterns, identifies integration points
+
+# 3. Write spec with existing code context
+"Load amp-os-write-spec skill for stripe-billing"
+# → References existing models, follows established patterns
+
+# 4. Create tasks respecting current architecture
+"Load amp-os-create-tasks skill for stripe-billing"
+# → Breaks work into incremental, non-breaking changes
+
+# 5. Implement incrementally
+"Load amp-os-implement-tasks skill for stripe-billing"
+# → Follows existing conventions, adds tests
+
+# 6. Verify integration
+"Load amp-os-verify-implementation skill for stripe-billing"
+# → Ensures no regressions, all tests pass
+```
+
+</details>
+
+<details>
+<summary><strong>OpenCode Version</strong></summary>
 
 ```bash
 # 1. Install Amp-OS into existing project
@@ -173,24 +259,26 @@ cd ~/projects/my-existing-app && opencode
 # → Ensures no regressions, all tests pass
 ```
 
+</details>
+
 **Brownfield Tips:**
-- Skip `/plan-product` unless restructuring the whole project
-- Use `/shape-spec` to analyze existing patterns first
+- Skip product planning unless restructuring the whole project
+- Use shape-spec to analyze existing patterns first
 - Reference existing code in your spec prompts
 - Implement in smaller increments to avoid breaking changes
 - Run existing tests frequently during implementation
 
 ---
 
-### Quick Reference: When to Use Each Command
+### Quick Reference
 
-| Scenario | Commands to Use |
-|----------|-----------------|
-| **New product** | `/plan-product` → `/shape-spec` → `/write-spec` → `/create-tasks` → `/implement` → `/verify` |
-| **New feature (existing app)** | `/shape-spec` → `/write-spec` → `/create-tasks` → `/implement` → `/verify` |
-| **Bug fix** | Skip workflow, fix directly with standards loaded |
-| **Refactoring** | `/shape-spec` (to document current state) → `/create-tasks` → `/implement` → `/verify` |
-| **Spike/exploration** | `/shape-spec` only (research without committing to implementation) |
+| Scenario | Amp CLI Skills | OpenCode Commands |
+|----------|----------------|-------------------|
+| **New product** | `plan-product` → `shape-spec` → `write-spec` → `create-tasks` → `implement-tasks` → `verify-implementation` | `/plan-product` → `/shape-spec` → `/write-spec` → `/create-tasks` → `/implement` → `/verify` |
+| **New feature** | `shape-spec` → `write-spec` → `create-tasks` → `implement-tasks` → `verify-implementation` | `/shape-spec` → `/write-spec` → `/create-tasks` → `/implement` → `/verify` |
+| **Bug fix** | Load `standards-*` skills, fix directly | Fix directly (standards auto-loaded) |
+| **Refactoring** | `shape-spec` → `create-tasks` → `implement-tasks` → `verify-implementation` | `/shape-spec` → `/create-tasks` → `/implement` → `/verify` |
+| **Spike/research** | `shape-spec` only | `/shape-spec` only |
 
 ---
 
